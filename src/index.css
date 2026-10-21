@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Nunito', system-ui, sans-serif;
+  color: #4a4458;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #ffe6f0 0%, transparent 55%),
+    radial-gradient(1000px 500px at 100% 0%, #e7e0ff 0%, transparent 50%),
+    linear-gradient(180deg, #fff7fb 0%, #f3f8ff 100%);
+  background-repeat: no-repeat;
+}
+
+@layer components {
+  .ic-card {
+    @apply rounded-3xl bg-white/90 border border-white shadow-soft;
+  }
+
+  .ic-input {
+    @apply w-full rounded-2xl border border-purple-100 bg-white/90 px-4 py-2.5 text-ink
+      outline-none transition focus:border-lavender focus:ring-4 focus:ring-lavender/30
+      placeholder:text-purple-300;
+  }
+
+  .ic-label {
+    @apply mb-1.5 block text-sm font-bold text-ink/70;
+  }
+
+  .ic-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-2.5 font-bold
+      transition focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .ic-btn-primary {
+    @apply ic-btn bg-gradient-to-r from-lavender to-blossom text-white shadow-soft
+      hover:brightness-105 focus:ring-lavender/40;
+  }
+
+  .ic-btn-ghost {
+    @apply ic-btn bg-white/70 text-ink hover:bg-white focus:ring-lavender/30 border border-purple-100;
+  }
+
+  .ic-chip {
+    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold;
+  }
+}
