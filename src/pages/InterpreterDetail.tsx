@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Avatar, Chip, EmptyState } from '@/components/ui'
 import { useAuth } from '@/context/AuthContext'
@@ -27,8 +27,21 @@ export default function InterpreterDetail() {
   const navigate = useNavigate()
   const profile = useMemo(() => getProfile(id), [id])
 
+  // First option the sign-language <select> actually renders: a real sign
+  // language if the interpreter lists any, otherwise the first free-text
+  // "other" language. Defaulting state to this keeps the recorded value in
+  // sync with what the browser shows selected when the user never opens it.
+  const firstLanguageOption = useMemo(() => {
+    if (!profile) return ''
+    const other = profile.otherLanguages
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+    return profile.signLanguages[0] ?? other[0] ?? ''
+  }, [profile])
+
   const [eventType, setEventType] = useState(EVENT_TYPES[0])
-  const [signLanguage, setSignLanguage] = useState('')
+  const [signLanguage, setSignLanguage] = useState(firstLanguageOption)
   const [mode, setMode] = useState<CommunicationMode>('in-person')
   const [date, setDate] = useState('')
   const [startTime, setStartTime] = useState('')
@@ -37,6 +50,12 @@ export default function InterpreterDetail() {
   const [notes, setNotes] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+
+  // Reset the selection to the first rendered option when the viewed
+  // interpreter changes.
+  useEffect(() => {
+    setSignLanguage(firstLanguageOption)
+  }, [firstLanguageOption])
 
   if (!profile) {
     return (
